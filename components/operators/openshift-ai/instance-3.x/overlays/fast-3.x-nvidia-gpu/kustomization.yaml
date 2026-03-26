@@ -4,6 +4,17 @@ kind: Kustomization
 resources:
   - ../../base
 
+# Restore correct namespace for Gateways — the base sets
+# namespace: redhat-ods-applications which overrides the explicit
+# openshift-ingress namespace in the gateway resources.
+patches:
+  - target:
+      kind: Gateway
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: openshift-ingress
+
 components:
   - ../../components/components-aipipelines
   - ../../components/components-feast
